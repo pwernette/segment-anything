@@ -32,7 +32,7 @@ def try_clean(items):
     torch.cuda.empty_cache()
 
 # define parameters
-annotate_boxes_on_image = True
+annotate_boxes_on_image = False
 min_area = 1000
 ppside = 32
 thresh_iou = 0.85
@@ -96,19 +96,19 @@ for filename in os.listdir(input_dir):
         else:
             output_directory = os.path.join(out_dir,'objects')
             
-        if annotate_boxes_on_image:
-            plt.figure(figsize=(20,20))
-            for m in masks:
-                if m['area'] > 100000:
-                    print(m['bbox'])
-                    # plot image with bounding boxes
-                    x,y,w,h = m['bbox']
-                    image = cv2.rectangle(img=image, rec=(x,y,w,h), color=(255,0,0), thickness=10)
-                    image = cv2.putText(image, text="IoU: "+str(m['predicted_iou']), org=(x,y), font=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255,0,0))
-            plt.axis("off")
-            plt.savefig(os.path.join(out_dir,filename.split('.')[0]+'_with_bbox_annotations.png'), bbox_inches='tight', dpi=300)
-            plt.close()
-            print('Wrote out {}'.format(os.path.join(out_dir,filename.split('.')[0]+'_with_bbox_annotations.png')))
+        # if annotate_boxes_on_image:
+        #     plt.figure(figsize=(20,20))
+        #     for m in masks:
+        #         if m['area'] > 100000:
+        #             print(m['bbox'])
+        #             # plot image with bounding boxes
+        #             x,y,w,h = m['bbox']
+        #             image = cv2.rectangle(img=image, rec=(x,y,w,h), color=(255,0,0), thickness=10)
+        #             image = cv2.putText(image, text="IoU: "+str(m['predicted_iou']), org=(x,y), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255,0,0))
+        #     plt.axis("off")
+        #     plt.savefig(os.path.join(out_dir,filename.split('.')[0]+'_with_bbox_annotations.png'), bbox_inches='tight', dpi=300)
+        #     plt.close()
+        #     print('Wrote out {}'.format(os.path.join(out_dir,filename.split('.')[0]+'_with_bbox_annotations.png')))
 
         if write_mask_objects:
             if write_mask_objects_by_image:
